@@ -11,16 +11,6 @@ exports.findAllnrB = function (req, res) {
     });
 };
 
-//GET by ID
-exports.findById = function (req, res) {
-    NrB.findById(req.params.id, function (err, nrB) {
-        if (err) return res.send(500, err.message);
-
-        console.log('GET /nrB/' + req.params.id);
-        res.status(200).jsonp(nrB);
-    });
-};
-
 //POST - post que nos hara A para saber que nos quiere enviar algo y le contestaremos con el paso 2 .
 exports.addNrB = function (req, res) {
     console.log('PASO 1 + PASO 2');
@@ -36,43 +26,31 @@ exports.addNrB = function (req, res) {
             prueba: req.body.prueba
         });
 
-        nrB.save(function (err, nrB) {
-            if (err) {
-                return res.send(500, err.message);
-            } else {
-                var paso2 = nrB.paso + 1;
-                var prueba2 = (nrB.identificador1 + "-" + paso2 + "-" + nrB.contenido);
-                var nrA = new NrB({
-                    identificador2: nrB.identificador1,
-                    paso: paso2,
-                    prueba: prueba2
-                })
-                nrA.save();
-                res.status(200).jsonp(nrA);
-            }
-        });
+        var paso2 = nrB.paso + 1;
+        var prueba2 = (nrB.identificador1 + "-" + paso2 + "-" + nrB.contenido);
+        var nrA = new NrB({
+            identificador2: nrB.identificador1,
+            paso: paso2,
+            prueba: prueba2
+        })
+
+        res.status(200).jsonp(nrA);
     } else {
         res.status(200).jsonp("La Prueba de Origen es falsa.");
     }
 };
 
-////POST - especial para A
-//    exports.addNrA = function (req, res) {
-//        console.log('POST');
-//        console.log(req.body);
-//
-//        var nrB = new NrB({
-//            identificador: "A",
-//            paso: "2",
-//            prueba: "A2sesto mariquita"
-//        });
-//
-//        nrB.save(function (err, nrB) {
-//            if (err) return res.send(500, err.message);
-//            res.status(200).jsonp(nrB);
-//        });
-//    };
+/* ---------------------------------------------------------------------------------------------------------------- */
 
+//GET by ID
+exports.findById = function (req, res) {
+    NrB.findById(req.params.id, function (err, nrB) {
+        if (err) return res.send(500, err.message);
+
+        console.log('GET /nrB/' + req.params.id);
+        res.status(200).jsonp(nrB);
+    });
+};
 
 //PUT - Update a register already exists
 exports.updateNrB = function (req, res) {
