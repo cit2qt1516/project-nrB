@@ -1,24 +1,23 @@
-/**
- * Created by Administrador on 02/11/2015.
- */
 var mongoose = require('mongoose');
 var NrB = mongoose.model('nrMessage');
 
 //GET All
 exports.findAllnrB = function(req, res) {
-    NrB.find(function(err, nrb) {
+    NrB.find(function(err, nrB) {
         if(err) res.send(500, err.message);
-        res.status(200).jsonp(nrb);
+
+        console.log('GET /nrB')
+        res.status(200).jsonp(nrB);
     });
 };
 
 //GET by ID
 exports.findById = function(req, res) {
-    NrB.findById(req.params.id, function(err, nrb) {
+    NrB.findById(req.params.id, function(err, nrB) {
         if(err) return res.send(500, err.message);
 
-        console.log('GET /nrb/' + req.params.id);
-        res.status(200).jsonp(nrb);
+        console.log('GET /nrB/' + req.params.id);
+        res.status(200).jsonp(nrB);
     });
 };
 
@@ -37,14 +36,14 @@ exports.addNrB = function(req, res) {
         prueba:  prueba
     });
 
-    nrB.save(function(err, nrb) {
+    nrB.save(function(err, nrB) {
         if(err){
             return res.send(500, err.message);
         } else {
-            var paso2 = nrb.paso+1;
-            var prueba2 = (nrb.identificador1+paso2+nrb.contenido);
+            var paso2 = nrB.paso+1;
+            var prueba2 = (nrB.identificador1+paso2+nrB.contenido);
             var nrA = new NrB({
-                identificador2:  nrb.identificador1,
+                identificador2:  nrB.identificador1,
                 paso: 		paso2,
                 prueba:    prueba2
             })
@@ -65,19 +64,19 @@ exports.addNrB = function(req, res) {
 //            prueba: "A2sesto mariquita"
 //        });
 //
-//        nrB.save(function (err, nrb) {
+//        nrB.save(function (err, nrB) {
 //            if (err) return res.send(500, err.message);
-//            res.status(200).jsonp(nrb);
+//            res.status(200).jsonp(nrB);
 //        });
 //    };
 
 
 //PUT - Update a register already exists
 exports.updateNrB = function(req, res) {
-    NrB.findOneAndUpdate({"_id": req.params.id}, req.body, function(err, nrb) {
-           nrb.set(function(err) {
+    NrB.findOneAndUpdate({"_id": req.params.id}, req.body, function(err, nrB) {
+           nrB.set(function(err) {
             //if(err) return res.send(500, err.message);
-            //res.status(200).jsonp(nrb);
+            //res.status(200).jsonp(nrB);
             if (!err) {
                 console.log('Updated');
             }
@@ -91,8 +90,8 @@ exports.updateNrB = function(req, res) {
 
 //DELETE -
 exports.deleteNrB = function(req, res) {
-    NrB.findOne({"_id":req.params.id}, function(err, nrb) {
-        nrb.remove(function(err) {
+    NrB.findOne({"_id":req.params.id}, function(err, nrB) {
+        nrB.remove(function(err) {
             //if(err) return res.send(500, err.message);
             if (!err) {
                 console.log('Object delete');
